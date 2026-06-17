@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Business Finance Quest: The Financial Empire</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#0f1b33; --ink:#f8fafc; --muted:#b8c4dc;
+  --gold:#facc15; --blue:#38bdf8; --green:#22c55e; --red:#ef4444;
+  --violet:#a78bfa; --orange:#fb923c; --border:rgba(255,255,255,.15);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 15% 10%, rgba(250,204,21,.18), transparent 25%),
+  radial-gradient(circle at 85% 15%, rgba(56,189,248,.20), transparent 25%),
+  linear-gradient(180deg,#050917,#0b1430 45%,#07111f);min-height:100vh;
+}
+header{padding:30px 18px 24px;text-align:center;background:linear-gradient(135deg,rgba(250,204,21,.16),rgba(56,189,248,.16),rgba(167,139,250,.16));border-bottom:1px solid var(--border)}
+header h1{margin:0;font-size:clamp(30px,5vw,58px);text-shadow:0 5px 25px rgba(250,204,21,.35)}
+header p{margin:8px 0 0;color:var(--muted);font-size:18px}
+.wrap{max-width:1220px;margin:0 auto;padding:20px}
+.panel{background:linear-gradient(180deg,rgba(15,27,51,.95),rgba(9,17,35,.96));border:1px solid var(--border);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.28);padding:20px;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.col-4{grid-column:span 4}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+@media(max-width:880px){.col-4,.col-8{grid-column:span 12}}
+button{border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;color:#08111f;background:linear-gradient(135deg,var(--gold),var(--orange));transition:.15s}
+button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+button.secondary{background:linear-gradient(135deg,var(--blue),#3b82f6);color:#04101d}
+button.ghost{background:#243557;color:var(--ink);border:1px solid var(--border)}
+button.good{background:var(--green);color:white} button.bad{background:var(--red);color:white}
+input,select{width:100%;padding:12px;border-radius:14px;border:1px solid var(--border);background:#081226;color:var(--ink);font-size:15px}
+.hidden{display:none!important}
+.story{background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.25);padding:16px;border-radius:18px;color:#fef9c3;line-height:1.5}
+.badge{display:inline-block;padding:7px 11px;border-radius:999px;background:rgba(56,189,248,.12);color:#bae6fd;border:1px solid rgba(56,189,248,.3);font-size:13px;font-weight:900}
+.team-row{display:grid;grid-template-columns:1fr 74px 72px 72px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border)}
+.team-row:last-child{border-bottom:0}.score{font-size:25px;font-weight:950;color:var(--gold)}
+.rank1{border-color:rgba(250,204,21,.7);box-shadow:0 0 0 2px rgba(250,204,21,.1);border-radius:14px;padding-left:6px}
+.map{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:10px 0 14px}
+@media(max-width:850px){.map{grid-template-columns:1fr 1fr}}
+.gate{padding:12px;border-radius:16px;background:#111d3c;border:1px solid var(--border);text-align:center;font-weight:950;color:var(--muted);min-height:82px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.gate.open{border-color:rgba(250,204,21,.65);box-shadow:0 0 0 3px rgba(250,204,21,.12);color:white}
+.gate.done{border-color:rgba(34,197,94,.65);background:rgba(34,197,94,.14);color:white}
+.progress{height:14px;background:#081226;border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--gold));transition:.25s}
+.card{background:linear-gradient(180deg,rgba(23,38,74,.98),rgba(11,20,43,.98));border:1px solid var(--border);border-radius:22px;padding:18px}
+.question{font-size:24px;font-weight:950;line-height:1.35;margin:14px 0}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:650px){.choices{grid-template-columns:1fr}}
+.choice{background:#0b1530;color:var(--ink);border:1px solid var(--border);text-align:left;min-height:56px}
+.choice.correct{background:rgba(34,197,94,.25);border-color:var(--green)}.choice.wrong{background:rgba(239,68,68,.25);border-color:var(--red)}
+.feedback{margin-top:14px;padding:13px;border-radius:15px;background:rgba(255,255,255,.08);border:1px solid var(--border);font-weight:800}
+.small{color:var(--muted);font-size:14px}
+.sort-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}@media(max-width:780px){.sort-grid{grid-template-columns:1fr}}
+.dropzone{min-height:120px;border:2px dashed rgba(255,255,255,.25);border-radius:16px;padding:10px;background:rgba(255,255,255,.04)}
+.drag{display:inline-block;padding:8px 10px;margin:5px;border-radius:12px;background:#0ea5e9;color:white;font-weight:800;cursor:grab}
+.pair-card,.door{padding:12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--border);margin:8px 0}
+.door.unlocked{background:rgba(34,197,94,.16);border-color:var(--green)}
+.wheel{width:260px;height:260px;border-radius:50%;margin:10px auto;display:flex;align-items:center;justify-content:center;text-align:center;background:conic-gradient(#facc15,#38bdf8,#a78bfa,#22c55e,#fb923c,#facc15);color:#06111f;font-weight:950;font-size:20px;box-shadow:0 0 35px rgba(250,204,21,.22);padding:20px}
+.envelope{background:#24345c;padding:20px;border-radius:15px;cursor:pointer;border:2px solid #3b82f6;text-align:center}
+.envelope:hover{transform:scale(1.03)}.crystal{font-size:45px;margin:4px}.leader{display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:12px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--border)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.68);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal-content{width:100%;max-width:720px;background:#101b35;border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 20px 80px rgba(0,0,0,.45)}
+.empire-title{font-size:32px;color:var(--gold);font-weight:950;text-align:center;margin:10px 0}
+.confetti{position:fixed;top:-20px;width:10px;height:18px;background:var(--gold);animation:fall 2.6s linear forwards;z-index:80}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.2}}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" src="sounds/adventure.mp3" loop></audio>
+<audio id="bossMusic" src="sounds/elfili.mp3" loop></audio>
+<audio id="correctSound" src="sounds/correct.mp3"></audio>
+<audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+<audio id="unlockSound" src="sounds/unlock.mp3"></audio>
+<audio id="victorySound" src="sounds/victory.mp3"></audio>
+
+<header>
+  <h1>🏰 Business Finance Quest</h1>
+  <p>The Financial Empire | Teacher-Led Formative Game</p>
+</header>
+
+<div class="wrap">
+  <section class="panel" id="setupPanel">
+    <div class="story"><b>Game Story:</b> The Financial Empire has lost its Five Golden Finance Crystals. Five teams must conquer the Five Gates and the Final Golden Treasury Hunt to become the <b>Masters of the Financial Empire</b>.</div>
+    <h2>Five Teams</h2>
+    <div class="grid">
+      <div class="col-4"><input id="team1" value="Capital Keepers" /></div>
+      <div class="col-4"><input id="team2" value="Finance Strategists" /></div>
+      <div class="col-4"><input id="team3" value="Market Mavericks" /></div>
+      <div class="col-4"><input id="team4" value="Enterprise Builders" /></div>
+      <div class="col-4"><input id="team5" value="Empire Guardians" /></div>
+      <div class="col-4"><button class="secondary" onclick="startGame()">Start the Quest</button></div>
+    </div>
+    <p class="small">No Firebase. No login. Scores are saved automatically on this browser/device.</p>
+  </section>
+
+  <section class="panel hidden" id="gamePanel">
+    <div class="grid">
+      <div class="col-4">
+        <h2>💰 XP Leaderboard</h2><div id="scoreboard"></div>
+        <div class="toolbar">
+          <button onclick="toggleMusic()" id="musicBtn">🎵 Music On</button>
+          <button class="ghost" onclick="saveState()">💾 Save</button>
+          <button class="bad" onclick="resetGame()">Reset Game</button>
+          <button class="secondary" onclick="showWinners()">Show Winners</button>
+        </div>
+        <p class="small">Teacher controls XP and gate progress. Use projector/TV for class viewing.</p>
+      </div>
+      <div class="col-8">
+        <h2 id="gateTitle">Financial Empire Map</h2>
+        <div class="map" id="map"></div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div id="gameArea" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal hidden" id="winnerModal">
+  <div class="modal-content">
+    <div class="empire-title">🏆 Masters of the Financial Empire</div>
+    <div id="winnerList"></div>
+    <button onclick="winnerModal.classList.add('hidden')">Close</button>
+  </div>
+</div>
+
+<script>
+let teams=[], scores={}, currentGate=0, selectedTeam="", cleared=[], dragged=null, currentWheelQuestion=0, currentFinal=-1, crystals=[];
+let audioCtx=null, musicOn=false, musicInterval=null;
+
+const gates=[
+{name:"Gate 1: Chamber of Finance",icon:"🏛️",mechanic:"Sorting Puzzle"},
+{name:"Gate 2: Hall of Ownership",icon:"👑",mechanic:"Matching Mystery"},
+{name:"Gate 3: Treasury Maze",icon:"💼",mechanic:"Escape Room"},
+{name:"Gate 4: Institution Forge",icon:"🏦",mechanic:"Mystery Client Wheel"},
+{name:"Gate 5: Market Citadel",icon:"📈",mechanic:"Market Match"},
+{name:"Final Boss",icon:"🔐",mechanic:"Golden Treasury Hunt"}
+];
+
+const gate1Cards=[
+["Saving allowance for school supplies","Personal Finance"],["Making a monthly family budget","Personal Finance"],["Government building roads","Public Finance"],["Government collecting taxes","Public Finance"],["Company borrowing money for expansion","Corporate Finance"],["Business buying new equipment","Corporate Finance"],["Student saving for college","Personal Finance"],["City budget for public hospital","Public Finance"],["Corporation issuing bonds","Corporate Finance"]
+];
+const gate2Questions=[
+{s:"Maria owns a sari-sari store alone and makes all decisions.",a:"Sole Proprietorship"},{s:"Two friends open a printing shop and share profits.",a:"Partnership"},{s:"A company has shareholders and a board of directors.",a:"Corporation"},{s:"Ana sells online products using her own capital.",a:"Sole Proprietorship"},{s:"Three chefs start a restaurant together and divide responsibilities.",a:"Partnership"}];
+const gate3Doors=[
+{door:"Door 1",q:"The company chooses where to invest its money for future income.",a:"Investment Decision",choices:["Investment Decision","Financing Decision","Dividend Decision"]},
+{door:"Door 2",q:"The company chooses whether to borrow money or get investors.",a:"Financing Decision",choices:["Investment Decision","Financing Decision","Dividend Decision"]},
+{door:"Door 3",q:"The company decides how much profit will be given to shareholders.",a:"Dividend Decision",choices:["Investment Decision","Financing Decision","Dividend Decision"]},
+{door:"Door 4",q:"The manager studies financial reports and prepares future plans.",a:"Financial Analysis and Planning",choices:["Financial Analysis and Planning","Marketing","Production"]},
+{door:"Door 5",q:"The person responsible for important financial functions in a business.",a:"Financial Manager",choices:["Supplier","Financial Manager","Customer"]}
+];
+const gate4Questions=[
+{wheel:"Save and borrow money",q:"A business owner wants to deposit savings and apply for a loan.",a:"Commercial Bank",choices:["Commercial Bank","Insurance Company","Brokerage","Investment Company"]},
+{wheel:"Protection from risk",q:"A store owner wants protection against fire, accident, or property loss.",a:"Insurance Company",choices:["Commercial Bank","Insurance Company","Investment Bank","Stock Market"]},
+{wheel:"Buy and sell stocks",q:"An investor wants help buying and selling stocks.",a:"Brokerage",choices:["Brokerage","Commercial Bank","Insurance Company","Public Market"]},
+{wheel:"Raise funds through securities",q:"A company wants help selling new securities to investors.",a:"Investment Bank",choices:["Investment Bank","Commercial Bank","Insurance Company","Nonbank Lender"]},
+{wheel:"Pool investor funds",q:"Several investors want their funds pooled and invested in securities.",a:"Investment Company",choices:["Investment Company","Commercial Bank","Brokerage","Insurance Company"]}
+];
+const gate5Questions=[
+{q:"Stocks",a:"Stock Market",choices:["Stock Market","Bond Market","Money Market","Foreign Exchange Market"]},
+{q:"Bonds",a:"Bond Market",choices:["Stock Market","Bond Market","Money Market","Foreign Exchange Market"]},
+{q:"Treasury Bills",a:"Money Market",choices:["Stock Market","Bond Market","Money Market","Foreign Exchange Market"]},
+{q:"Currency exchange",a:"Foreign Exchange Market",choices:["Stock Market","Bond Market","Money Market","Foreign Exchange Market"]},
+{q:"New securities sold for the first time",a:"Primary Market",choices:["Primary Market","Secondary Market","Money Market","Insurance Market"]}
+];
+const finalChallenges=[
+{q:"I manage my allowance and save for college. What type of finance is this?",a:"personal finance",e:"💎 Finance Crystal"},
+{q:"Maria owns a bakery alone. What type of business organization is this?",a:"sole proprietorship",e:"👑 Ownership Crystal"},
+{q:"The company needs money to expand. What decision is this?",a:"financing decision",e:"💼 Treasury Crystal"},
+{q:"I want to insure my business against fire. Which institution should I approach?",a:"insurance company",e:"🏦 Institution Crystal"},
+{q:"Investors buy and sell stocks they already own. Which market is this?",a:"secondary market",e:"📈 Market Crystal"}
+];
+
+function startGame(){
+  teams=[team1.value,team2.value,team3.value,team4.value,team5.value].map(x=>x.trim());
+  scores={};teams.forEach(t=>scores[t]=0);selectedTeam=teams[0];currentGate=0;cleared=[];crystals=[];
+  setupPanel.classList.add("hidden");gamePanel.classList.remove("hidden");
+  renderScoreboard();renderMap();renderGate();saveState();sound("start");
+}
+function saveState(){localStorage.setItem("bfq_formative_state",JSON.stringify({teams,scores,currentGate,cleared}));}
+function loadState(){
+  const saved=localStorage.getItem("bfq_formative_state");
+  if(saved){
+    const s=JSON.parse(saved);teams=s.teams||[];scores=s.scores||{};currentGate=s.currentGate||0;cleared=s.cleared||[];
+    if(teams.length===5){selectedTeam=teams[0];setupPanel.classList.add("hidden");gamePanel.classList.remove("hidden");renderScoreboard();renderMap();renderGate();}
+  }
+}
+function resetGame(){
+  if(!confirm("Reset all XP and gates?")) return;
+  localStorage.removeItem("bfq_formative_state");location.reload();
+}
+function addScore(t,v){scores[t]=Math.max(0,(scores[t]||0)+v);renderScoreboard();saveState(); if(v>0) sound("coin");}
+function teamSelectHTML(){return `<label><b>Playing Group</b></label><select id="teamSelect" onchange="selectedTeam=this.value">${teams.map(t=>`<option ${t===selectedTeam?"selected":""}>${t}</option>`).join("")}</select>`}
+function renderScoreboard(){
+  const sorted=[...teams].sort((a,b)=>(scores[b]||0)-(scores[a]||0));
+  scoreboard.innerHTML="";
+  sorted.forEach((t,i)=>{
+    let row=document.createElement("div");row.className="team-row "+(i===0?"rank1":"");
+    row.innerHTML=`<b>${i===0?'🥇 ':i===1?'🥈 ':i===2?'🥉 ':''}${t}</b><span class="score">${scores[t]||0}</span><button class="good" onclick="addScore('${t}',5)">+5</button><button class="bad" onclick="addScore('${t}',-5)">-5</button>`;
+    scoreboard.appendChild(row);
+  });
+}
+function renderMap(){
+  map.innerHTML="";
+  gates.forEach((g,i)=>{
+    let d=document.createElement("div");d.className="gate "+(cleared.includes(i)?"done":i===currentGate?"open":"");
+    d.innerHTML=`<div>${cleared.includes(i)?"✅":i===currentGate?"🔓":"🔒"}</div><div>${g.icon}</div><small>${g.mechanic}</small>`;
+    map.appendChild(d);
+  });
+  bar.style.width=(currentGate/6*100)+"%";
+}
+function renderGate(){
+  gateTitle.textContent=gates[currentGate].icon+" "+gates[currentGate].name;
+  if(currentGate===0)renderGate1();if(currentGate===1)renderGate2();if(currentGate===2)renderGate3();if(currentGate===3)renderGate4();if(currentGate===4)renderGate5();if(currentGate===5)renderFinal();renderMap();
+}
+function finishGate(){
+  if(!cleared.includes(currentGate)) cleared.push(currentGate);
+  if(currentGate<5){currentGate++;renderGate();sound("unlock");}else{showWinners();}
+  saveState();
+}
+
+function setupDrag(){
+  dragged=null;document.querySelectorAll(".drag").forEach(el=>el.addEventListener("dragstart",()=>dragged=el));
+  document.querySelectorAll(".dropzone").forEach(z=>{z.addEventListener("dragover",e=>e.preventDefault());z.addEventListener("drop",e=>{e.preventDefault();if(dragged)z.appendChild(dragged);});});
+}
+function renderGate1(){
+  gameArea.innerHTML=`<div class="card"><span class="badge">Definition and Types of Finance</span><h2>Finance Sorting Puzzle</h2><p>Drag each scenario to the correct type. Each correct card = 5 XP.</p>${teamSelectHTML()}<h3>Scenario Cards</h3><div>${gate1Cards.map(c=>`<span class="drag" draggable="true" data-answer="${c[1]}">${c[0]}</span>`).join("")}</div><div class="sort-grid"><div><h3>Personal Finance</h3><div class="dropzone" data-zone="Personal Finance"></div></div><div><h3>Public Finance</h3><div class="dropzone" data-zone="Public Finance"></div></div><div><h3>Corporate Finance</h3><div class="dropzone" data-zone="Corporate Finance"></div></div></div><button class="secondary" onclick="checkSorting()">Submit Answer</button> <button class="ghost" onclick="finishGate()">Next Gate</button><div id="feedback" class="feedback hidden"></div></div>`;
+  setupDrag();
+}
+function checkSorting(){selectedTeam=teamSelect.value;let correct=0;document.querySelectorAll(".dropzone").forEach(z=>[...z.querySelectorAll(".drag")].forEach(card=>{if(card.dataset.answer===z.dataset.zone)correct++;}));let pts=correct*5;scores[selectedTeam]=(scores[selectedTeam]||0)+pts;feedback.classList.remove("hidden");feedback.innerHTML=`✅ ${correct}/9 correct. ${selectedTeam} earned ${pts} XP.`;renderScoreboard();saveState();sound("coin");}
+
+function renderGate2(){
+  let html=`<div class="card"><span class="badge">Types of Business Organization</span><h2>Human Matching Mystery</h2><p>Choose the correct organization. Each correct answer = 10 XP.</p>${teamSelectHTML()}`;
+  gate2Questions.forEach((x,i)=>html+=`<div class="pair-card"><b>Situation ${i+1}:</b> ${x.s}<select id="g2_${i}"><option value="">Choose</option><option>Sole Proprietorship</option><option>Partnership</option><option>Corporation</option></select></div>`);
+  html+=`<button class="secondary" onclick="checkGate2()">Submit Answer</button> <button class="ghost" onclick="finishGate()">Next Gate</button><div id="feedback" class="feedback hidden"></div></div>`;gameArea.innerHTML=html;
+}
+function checkGate2(){selectedTeam=teamSelect.value;let correct=0;gate2Questions.forEach((x,i)=>{if(document.getElementById("g2_"+i).value===x.a)correct++;});let pts=correct*10;scores[selectedTeam]=(scores[selectedTeam]||0)+pts;feedback.classList.remove("hidden");feedback.innerHTML=`✅ ${correct}/5 correct. ${selectedTeam} earned ${pts} XP.`;renderScoreboard();saveState();sound("coin");}
+
+function renderGate3(){
+  let html=`<div class="card"><span class="badge">Financial Manager Functions</span><h2>Financial Escape Room</h2><p>Unlock 5 doors. Each correct door = 12 XP.</p>${teamSelectHTML()}`;
+  gate3Doors.forEach((d,i)=>{html+=`<div class="door" id="door_${i}"><b>🔒 ${d.door}</b><div>${d.q}</div><div class="choices">${d.choices.map(c=>`<button class="choice" onclick="answerDoor(${i},'${c}')">${c}</button>`).join("")}</div></div>`});
+  html+=`<button class="ghost" onclick="finishGate()">Next Gate</button><div id="feedback" class="feedback hidden"></div></div>`;gameArea.innerHTML=html;
+}
+function answerDoor(i,choice){selectedTeam=teamSelect.value;let door=document.getElementById("door_"+i);if(choice===gate3Doors[i].a){if(!door.classList.contains("unlocked"))scores[selectedTeam]=(scores[selectedTeam]||0)+12;door.classList.add("unlocked");door.querySelector("b").innerText="✅ "+gate3Doors[i].door;feedback.innerHTML="Door unlocked!";sound("unlock");}else{feedback.innerHTML="Try again.";sound("wrong");}feedback.classList.remove("hidden");renderScoreboard();saveState();}
+
+function renderGate4(){currentWheelQuestion=0;showWheelQuestion();}
+function showWheelQuestion(){
+  let x=gate4Questions[currentWheelQuestion];
+  gameArea.innerHTML=`<div class="card"><span class="badge">Financial Institutions</span><h2>Mystery Client Wheel</h2><p>The wheel shows the client's need, not the answer. Decide the correct institution.</p>${teamSelectHTML()}<div class="wheel" id="wheel">SPIN</div><button class="secondary" onclick="spinWheel()">Spin Wheel</button><div id="wheelQuestion" class="hidden"><div class="question">${x.q}</div><div class="choices">${x.choices.map(c=>`<button class="choice" onclick="answerWheel('${c}')">${c}</button>`).join("")}</div></div><button class="ghost" onclick="nextWheel()">Next Item</button><button class="ghost" onclick="finishGate()">Next Gate</button><div id="feedback" class="feedback hidden"></div></div>`;
+}
+function spinWheel(){wheel.textContent=gate4Questions[currentWheelQuestion].wheel;wheelQuestion.classList.remove("hidden");sound("spin");}
+function answerWheel(choice){selectedTeam=teamSelect.value;let correct=gate4Questions[currentWheelQuestion].a;if(choice===correct){scores[selectedTeam]=(scores[selectedTeam]||0)+15;feedback.innerHTML=`✅ Correct! ${selectedTeam} earned 15 XP.`;sound("coin");}else{feedback.innerHTML=`❌ Correct answer: ${correct}`;sound("wrong");}feedback.classList.remove("hidden");renderScoreboard();saveState();}
+function nextWheel(){currentWheelQuestion++;if(currentWheelQuestion>=5)currentWheelQuestion=0;showWheelQuestion();}
+
+function renderGate5(){
+  let html=`<div class="card"><span class="badge">Financial Markets and Instruments</span><h2>Market Match</h2><p>Match each clue to the correct market. Each correct answer = 20 XP.</p>${teamSelectHTML()}`;
+  gate5Questions.forEach((x,i)=>html+=`<div class="pair-card"><b>${x.q}</b><select id="g5_${i}"><option value="">Choose</option>${x.choices.map(c=>`<option>${c}</option>`).join("")}</select></div>`);
+  html+=`<button class="secondary" onclick="checkGate5()">Submit Answer</button> <button class="ghost" onclick="finishGate()">Go to Final Boss</button><div id="feedback" class="feedback hidden"></div></div>`;gameArea.innerHTML=html;
+}
+function checkGate5(){selectedTeam=teamSelect.value;let correct=0;gate5Questions.forEach((x,i)=>{if(document.getElementById("g5_"+i).value===x.a)correct++;});let pts=correct*20;scores[selectedTeam]=(scores[selectedTeam]||0)+pts;feedback.classList.remove("hidden");feedback.innerHTML=`⚔️ ${correct}/5 correct. ${selectedTeam} earned ${pts} XP.`;renderScoreboard();saveState();sound("coin");}
+
+function renderFinal(){
+  crystals=[];
+  switchToBossMusic();
+  gameArea.innerHTML=`<div class="card"><span class="badge">Final Boss Game</span><h2>🔐 The Golden Treasury Hunt</h2><p>Open the 5 envelopes. Type the correct answer to collect each crystal. Each crystal = 25 XP.</p>${teamSelectHTML()}<div class="grid"><div class="col-4 envelope" onclick="openChallenge(0)">📜 Finance Crystal</div><div class="col-4 envelope" onclick="openChallenge(1)">👑 Ownership Crystal</div><div class="col-4 envelope" onclick="openChallenge(2)">💼 Treasury Crystal</div><div class="col-4 envelope" onclick="openChallenge(3)">🏦 Institution Crystal</div><div class="col-4 envelope" onclick="openChallenge(4)">📈 Market Crystal</div></div><div id="challenge" class="hidden" style="margin-top:20px"><h2 id="finalQ"></h2><input id="finalAnswer" placeholder="Type your answer here"><br><br><button class="secondary" onclick="checkFinal()">Submit</button><p id="finalFeedback"></p></div><div id="treasury" class="hidden"><h2>💎 Crystals Collected</h2><div id="crystals"></div><h2>🔐 Golden Treasury Unlocked!</h2><p>You have restored the Financial Empire.</p><h1>🏆 MASTERS OF THE FINANCIAL EMPIRE 🏆</h1><button onclick="finishGate()">Show Winners</button></div></div>`;
+}
+function openChallenge(i){if(crystals.includes(i))return;currentFinal=i;challenge.classList.remove("hidden");finalQ.innerText=finalChallenges[i].q;finalAnswer.value="";finalFeedback.innerHTML="";}
+function checkFinal(){selectedTeam=teamSelect.value;let ans=finalAnswer.value.trim().toLowerCase();if(ans===finalChallenges[currentFinal].a){finalFeedback.innerHTML="✅ Crystal Collected!";crystals.push(currentFinal);scores[selectedTeam]=(scores[selectedTeam]||0)+25;renderScoreboard();saveState();renderCrystals();sound("unlock");}else{finalFeedback.innerHTML="❌ Try again!";sound("wrong");}}
+function renderCrystals(){let out="";crystals.forEach(i=>out+=`<span class='crystal'>${finalChallenges[i].e}</span> `);document.getElementById("crystals").innerHTML=out;if(crystals.length===5){challenge.classList.add("hidden");treasury.classList.remove("hidden");confetti();}}
+
+function showWinners(){let sorted=[...teams].sort((a,b)=>(scores[b]||0)-(scores[a]||0));winnerList.innerHTML=sorted.map((t,i)=>`<div class="leader"><b>${i===0?'🥇':i===1?'🥈':i===2?'🥉':'🏅'} ${t}</b><span class="score">${scores[t]||0} XP</span></div>`).join("");winnerModal.classList.remove("hidden");confetti();sound("win");}
+
+
+function playAudio(id, restart=true){
+  const a=document.getElementById(id);
+  if(!a) return;
+  if(restart){a.currentTime=0;}
+  a.volume = id==="bgMusic" || id==="bossMusic" ? 0.35 : 0.75;
+  a.play().catch(()=>{});
+}
+function stopAudio(id){
+  const a=document.getElementById(id);
+  if(a){a.pause(); a.currentTime=0;}
+}
+function sound(kind){
+  if(kind==="coin") playAudio("correctSound");
+  if(kind==="wrong") playAudio("wrongSound");
+  if(kind==="unlock") playAudio("unlockSound");
+  if(kind==="spin") playAudio("correctSound");
+  if(kind==="start") playAudio("correctSound");
+  if(kind==="win") playAudio("victorySound");
+}
+function toggleMusic(){
+  if(!musicOn){
+    musicOn=true;
+    musicBtn.textContent="🔇 Music Off";
+    stopAudio("bossMusic");
+    playAudio("bgMusic", false);
+  }else{
+    musicOn=false;
+    musicBtn.textContent="🎵 Music On";
+    stopAudio("bgMusic");
+    stopAudio("bossMusic");
+  }
+}
+function switchToBossMusic(){
+  if(musicOn){
+    stopAudio("bgMusic");
+    playAudio("bossMusic", false);
+  }
+}
+function confetti()
+{
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=["#facc15","#38bdf8","#22c55e","#fb923c","#a78bfa"][Math.floor(Math.random()*5)];c.style.animationDelay=(Math.random()*0.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500);
+  }
+}
+window.onload=loadState;
+</script>
+</body>
+</html>
